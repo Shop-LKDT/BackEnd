@@ -1,4 +1,4 @@
-package com.project.shopapp.dtos.post;
+package com.project.shopapp.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
