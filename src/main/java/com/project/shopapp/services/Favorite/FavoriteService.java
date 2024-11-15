@@ -23,17 +23,21 @@ public class FavoriteService {
         return favouriteRepository.findFavoriteProductsByUser_id(userID);
     }
 
-    public void toggleFavorite(Long user_id, Long product_id) {
+    public boolean toggleFavorite(Long user_id, Long product_id) {
         // Kiểm tra xem yêu thích đã tồn tại hay chưa
         Optional<Favorite> favoriteOptional = favouriteRepository.findByUser_idAndProduct_id(user_id, product_id);
 
         if (favoriteOptional.isPresent()) {
+            System.out.println("Favorite already exists");
             // Nếu đã tồn tại, giảm biến đếm và xóa khỏi yêu thích
             Favorite favorite = favoriteOptional.get();
-            Product product = productRepository.findById(product_id).orElseThrow(() -> new RuntimeException("Product not found"));
+            Product product = productRepository.findById(product_id)
+                    .orElseThrow(() -> new RuntimeException("Product not found"));
             favouriteRepository.delete(favorite);
             product.setCount(product.getCount() - 1); // Giảm số lượt thích
             productRepository.save(product);
+
+            return false; // Trả về false vì sản phẩm đã bị xóa khỏi danh sách yêu thích
         } else {
             // Nếu chưa tồn tại, thêm mới và tăng biến đếm
             Favorite favorite = new Favorite();
@@ -41,13 +45,17 @@ public class FavoriteService {
             favorite.setProduct_id(product_id);
             favorite.setCount(1);
 
-            Product product = productRepository.findById(product_id).orElseThrow(() -> new RuntimeException("Product not found"));
+            Product product = productRepository.findById(product_id)
+                    .orElseThrow(() -> new RuntimeException("Product not found"));
             product.setCount(product.getCount() + 1); // Tăng số lượt thích
             productRepository.save(product);
 
             favouriteRepository.save(favorite);
+
+            return true; // Trả về true vì sản phẩm đã được thêm vào danh sách yêu thích
         }
     }
+
     public List<Object[]> getTotalLikesForAllProducts() {
         return favouriteRepository.findTotalLikesForAllProducts();
     }
