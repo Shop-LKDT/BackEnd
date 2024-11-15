@@ -1,7 +1,8 @@
-package com.project.shopapp.models;
+package com.project.shopapp.models.images;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.shopapp.models.Post;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,16 +14,16 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 
-public class ProductImage {
-    public static final int MAXIMUM_IMAGES_PER_PRODUCT = 6;
+public class PostImage {
+    public static final int MAXIMUM_IMAGES_PER_POST = 6;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "post_id")
     @JsonIgnore
-    private Product product;
+    private Post post;
 
     @Column(name = "image_url", length = 300)
     @JsonProperty("image_url")
