@@ -218,4 +218,31 @@ public class OrderService implements IOrderService{
     public Page<Order> getOrdersByKeyword(String keyword, Pageable pageable) {
         return orderRepository.findByKeyword(keyword, pageable);
     }
+
+    @Override
+    public double calculateTotalRevenue() {
+        // Lọc các đơn hàng không bị hủy và tính tổng doanh thu
+        return orderRepository.findAll()
+                .stream()
+                .filter(order -> order.getStatus() != OrderStatus.CANCELLED) // Bỏ qua đơn hàng bị hủy
+                .mapToDouble(Order::getTotalMoney)
+                .sum();
+    }
+
+    @Override
+    public int[] getMonthlyRevenueData() {
+        int[] monthlyRevenue = new int[12]; // Khởi tạo mảng doanh thu cho 12 tháng, mặc định là 0
+
+        List<Object[]> results = orderRepository.findMonthlyRevenue(); // Lấy dữ liệu từ repository
+
+        for (Object[] result : results) {
+            Integer month = (Integer) result[0];
+            Double totalRevenue = (Double) result[1]; // Chuyển sang Double để tránh lỗi
+            // Lưu doanh thu theo tháng vào mảng (tháng - 1 để tương ứng với vị trí 0-11)
+            monthlyRevenue[month - 1] = totalRevenue != null ? totalRevenue.intValue() : 0;
+        }
+
+        return monthlyRevenue;
+    }
+
 }

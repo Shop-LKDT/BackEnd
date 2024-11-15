@@ -11,6 +11,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
+    @Query("SELECT MONTH(o.orderDate) AS month, SUM(o.totalMoney) AS revenue " +
+            "FROM Order o " +
+            "WHERE o.orderDate IS NOT NULL AND o.status != 'cancelled' " + // Loại bỏ các đơn bị hủy
+            "GROUP BY MONTH(o.orderDate) " +
+            "ORDER BY MONTH(o.orderDate)")
+    List<Object[]> findMonthlyRevenue();
+
+
     //Tìm các đơn hàng của 1 user nào đó
     List<Order> findByUserId(Long userId);
     @Query("SELECT o FROM Order o WHERE o.active = true AND (:keyword IS NULL OR :keyword = '' OR " +

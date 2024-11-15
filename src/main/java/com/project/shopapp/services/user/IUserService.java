@@ -12,12 +12,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface IUserService {
     User createUser(UserDTO userDTO) throws Exception;
 
     User findByggId(String id) ;
-
+    List<User> findAllUsers();
     String login(UserLoginDTO userLoginDT) throws Exception;
     User getUserDetailsFromToken(String token) throws Exception;
     User getUserDetailsFromRefreshToken(String token) throws Exception;

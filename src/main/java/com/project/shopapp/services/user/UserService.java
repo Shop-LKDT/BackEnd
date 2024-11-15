@@ -83,6 +83,10 @@ public class UserService implements IUserService{
         }
         return userRepository.save(newUser);
     }
+    @Override
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
 
     @Override
     public User findByggId(String id)  {
