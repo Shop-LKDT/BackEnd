@@ -45,7 +45,8 @@ public class ReportService implements IReportService {
         Report newReport = Report.builder()
                 .reportContent(reportDTO.getReportContent())
                 .responseFromManagement(reportDTO.getResponseFromManagement())
-                .user(user).build();
+                .user(user)
+                .status("Chưa xử lý").build();
 
         return reportRepository.save(newReport);
     }
@@ -55,27 +56,18 @@ public class ReportService implements IReportService {
         Report existingReport = reportRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Report not found with id = " + id));;
 
-        if (updatedReport.getReportContent() != null) {
-            existingReport.setReportContent(updatedReport.getReportContent());
-        }
 
-        if (updatedReport.getResponseFromManagement() != null) {
+        if (updatedReport.getResponseFromManagement() != "") {
             existingReport.setResponseFromManagement(updatedReport.getResponseFromManagement());
         }
-
-        // Chỉ cập nhật người dùng nếu `updatedReport` có người dùng mới
-        if (updatedReport.getUserId() != null) {
-            User user = userRepository.findById(updatedReport.getUserId())
-                    .orElseThrow(() -> new DataNotFoundException("User not found with id = " + updatedReport.getUserId()));
-            existingReport.setUser(user);
+        if (updatedReport.getStatus() != "") {
+            existingReport.setStatus(updatedReport.getStatus());
         }
+
         existingReport.setUpdatedAt(LocalDateTime.now());
         reportRepository.save(existingReport);
 
-        ReportResponse reportResponse = new ReportResponse();
-        modelMapper.map(existingReport,reportResponse);
-
-        return reportResponse;
+        return ReportResponse.fromReport(existingReport);
     }
 
     @Override

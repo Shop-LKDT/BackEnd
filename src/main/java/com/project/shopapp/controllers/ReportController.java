@@ -1,21 +1,28 @@
 package com.project.shopapp.controllers;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.shopapp.dtos.ReportDTO;
 import com.project.shopapp.models.Product;
 import com.project.shopapp.models.Report;
 import com.project.shopapp.responses.ResponseObject;
+import com.project.shopapp.responses.order.OrderResponse;
+import com.project.shopapp.responses.product.ProductListResponse;
 import com.project.shopapp.responses.product.ProductResponse;
+import com.project.shopapp.responses.report.ReportListResponse;
 import com.project.shopapp.responses.report.ReportResponse;
 import com.project.shopapp.services.report.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping("${api.prefix}/reports")
@@ -58,23 +65,28 @@ public class ReportController {
             @RequestParam(defaultValue = "10") int size
     ) {
         try {
-            Page<ReportResponse> reportsPage = reportService.getAllReport(page, size);
-            if (reportsPage.isEmpty()) {
-                return ResponseEntity.ok(ResponseObject.builder()
-                        .message("No posts available")
-                        .status(HttpStatus.OK)
-                        .data(Collections.emptyList())
+            // Nếu page hoặc size không hợp lệ, trả về lỗi
+            if (page < 0 || size <= 0) {
+                return ResponseEntity.badRequest().body(ResponseObject.builder()
+                        .message("Page or size parameters are invalid")
+                        .status(HttpStatus.BAD_REQUEST)
                         .build());
             }
+
+            // Gọi dịch vụ để lấy danh sách báo cáo với phân trang
+            Page<ReportResponse> responsePage = reportService.getAllReport(page, size);
+
+            // Tạo đối tượng ResponseObject với dữ liệu phân trang
             return ResponseEntity.ok(ResponseObject.builder()
-                    .message("Retrieve posts successfully")
+                    .message("Get list of reports successfully")
+                    .data(responsePage.getContent()) // Trả về danh sách báo cáo
                     .status(HttpStatus.OK)
-                    .data(reportsPage.getContent())
                     .build());
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    ResponseObject.builder()
-                            .message("Error occurred while retrieving posts")
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResponseObject.builder()
+                            .message("Error retrieving reports: " + e.getMessage())
                             .status(HttpStatus.INTERNAL_SERVER_ERROR)
                             .build());
         }

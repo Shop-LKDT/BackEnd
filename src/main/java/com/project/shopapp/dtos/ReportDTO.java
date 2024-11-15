@@ -14,4 +14,8 @@ public class ReportDTO {
     private String reportContent;
 
     private String responseFromManagement;
+
+    private String status;
+
+
 }
