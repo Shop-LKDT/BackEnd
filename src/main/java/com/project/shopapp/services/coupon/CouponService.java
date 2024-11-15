@@ -19,53 +19,74 @@ public class CouponService implements ICouponService{
     private final CouponConditionRepository couponConditionRepository;
     @Override
     public double calculateCouponValue(String couponCode, double totalAmount) {
-        Optional<Coupon> couponOpt = couponRepository.findByCode(couponCode);
-        if (couponOpt.isPresent()) {
-            Coupon coupon = couponOpt.get();
-            System.out.println("Coupon found: " + couponCode);
-            if (!coupon.isActive()) {
-                System.out.println("Coupon is not active");
-                throw new IllegalArgumentException("Coupon is not active");
+        // Tìm coupon theo mã coupon
+        Optional<Coupon> couponOptional = couponRepository.findByCode(couponCode);
+
+        // Kiểm tra nếu coupon tồn tại và đang hoạt động
+        if (couponOptional.isPresent() && couponOptional.get().isActive()) {
+            Coupon coupon = couponOptional.get();
+            double discountValue;
+
+            // Giả định rằng giá trị của coupon (coupon.getValue()) có thể là phần trăm hoặc số tiền cố định
+            try {
+                if (coupon.getValue().endsWith("%")) {
+                    // Nếu giá trị là phần trăm, chuyển đổi sang double và tính theo tỷ lệ
+                    String percentageValue = coupon.getValue().replace("%", "");
+                    double percentage = Double.parseDouble(percentageValue);
+                    discountValue = (percentage / 100) * totalAmount;
+                } else {
+                    // Nếu là số tiền cố định, chuyển sang double
+                    discountValue = Double.parseDouble(coupon.getValue());
+                }
+
+                // Trả về giá trị giảm giá
+                return discountValue;
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Invalid coupon value format for code: " + couponCode);
             }
-            double discountAmount = calculateDiscount(coupon, totalAmount);
-            System.out.println("Discount calculated: " + discountAmount);
-            double finalAmount = totalAmount - discountAmount;
-            System.out.println("Final amount after discount: " + finalAmount);
-            return finalAmount;
         }
-        System.out.println("Coupon not found or invalid");
-        return totalAmount;
+
+        // Nếu coupon không hợp lệ hoặc không hoạt động, trả về 0 (không có giảm giá)
+        return 0;
     }
 
-    private double calculateDiscount(Coupon coupon, double totalAmount) {
-        List<CouponCondition> conditions = couponConditionRepository
-                .findByCouponId(coupon.getId());
-        double discount = 0.0;
-        double updatedTotalAmount = totalAmount;
-        for (CouponCondition condition : conditions) {
-            //EAV(Entity - Attribute - Value) Model
-            String attribute = condition.getAttribute();
-            String operator = condition.getOperator();
-            String value = condition.getValue();
 
-            double percentDiscount = Double.valueOf(
-                    String.valueOf(condition.getDiscountAmount()));
+    @Override
+    public Coupon createCoupon(Coupon coupon) {
+        return couponRepository.save(coupon);
+    }
 
-            if (attribute.equals("minimum_amount")) {
-                if (operator.equals(">") && updatedTotalAmount > Double.parseDouble(value)) {
-                    discount += updatedTotalAmount * percentDiscount / 100;
-                }
-            } else if (attribute.equals("applicable_date")) {
-                LocalDate applicableDate = LocalDate.parse(value);
-                LocalDate currentDate = LocalDate.now();
-                if (operator.equalsIgnoreCase("BETWEEN")
-                        && currentDate.isEqual(applicableDate)) {
-                    discount += updatedTotalAmount * percentDiscount / 100;
-                }
-            }
-            //còn nhiều nhiều điều kiện khác nữa
-            updatedTotalAmount = updatedTotalAmount - discount;
-        }
-        return discount;
+    @Override
+    public List<Coupon> getAllCoupons() {
+        return couponRepository.findAll();
+    }
+
+    @Override
+    public Optional<Coupon> getCouponById(Long id) {
+        return couponRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Coupon> getCouponByCode(String code) {
+        return couponRepository.findByCode(code); // Trả về Optional<Coupon> từ repository
+    }
+
+    @Override
+    public Coupon updateCoupon(Long id, Coupon couponDetails) {
+        Coupon coupon = couponRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Coupon not found with id " + id));
+
+        coupon.setCode(couponDetails.getCode());
+        coupon.setActive(couponDetails.isActive());
+        coupon.setValue(couponDetails.getValue());
+
+        return couponRepository.save(coupon);
+    }
+
+    @Override
+    public void deleteCoupon(Long id) {
+        Coupon coupon = couponRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Coupon not found with id " + id));
+        couponRepository.delete(coupon);
     }
 }
