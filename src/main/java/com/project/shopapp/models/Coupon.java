@@ -28,4 +28,7 @@ public class Coupon {
 
     @Column(name = "active", nullable = false)
     private boolean active;
+
+    @Column(name = "value", nullable = false, unique = true)
+    private String value;
 }
