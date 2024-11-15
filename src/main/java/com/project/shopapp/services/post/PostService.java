@@ -1,6 +1,6 @@
 package com.project.shopapp.services.post;
 
-import com.project.shopapp.dtos.post.PostDTO;
+import com.project.shopapp.dtos.PostDTO;
 import com.project.shopapp.dtos.images.PostImageDTO;
 import com.project.shopapp.exceptions.DataNotFoundException;
 import com.project.shopapp.exceptions.InvalidParamException;
