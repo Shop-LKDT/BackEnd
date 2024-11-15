@@ -6,6 +6,7 @@ import com.project.shopapp.exceptions.DataNotFoundException;
 import com.project.shopapp.models.Post;
 import com.project.shopapp.models.images.PostImage;
 import com.project.shopapp.responses.ResponseObject;
+import com.project.shopapp.responses.post.PostResponse;
 import com.project.shopapp.services.post.IPostService;
 import com.project.shopapp.utils.FileUtils;
 import com.project.shopapp.utils.MessageKeys;
@@ -71,7 +72,9 @@ public class PostController {
             @RequestParam(defaultValue = "10") int size
     ) {
         try {
-            Page<Post> postsPage = postService.getAllPost(page,size);
+            // Gọi phương thức getAllPost từ postService, nó trả về Page<PostResponse>
+            Page<PostResponse> postsPage = postService.getAllPost(page, size);
+
             if (postsPage.isEmpty()) {
                 return ResponseEntity.ok(ResponseObject.builder()
                         .message("No posts available")
@@ -79,10 +82,11 @@ public class PostController {
                         .data(Collections.emptyList())
                         .build());
             }
+
             return ResponseEntity.ok(ResponseObject.builder()
                     .message("Retrieve posts successfully")
                     .status(HttpStatus.OK)
-                    .data(postsPage.getContent())
+                    .data(postsPage.getContent()) // Lấy danh sách PostResponse từ Page
                     .build());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
@@ -92,6 +96,7 @@ public class PostController {
                             .build());
         }
     }
+
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

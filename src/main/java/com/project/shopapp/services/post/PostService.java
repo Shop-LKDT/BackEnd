@@ -8,6 +8,8 @@ import com.project.shopapp.models.Post;
 import com.project.shopapp.models.images.PostImage;
 import com.project.shopapp.repositories.PostImageRepositorry;
 import com.project.shopapp.repositories.PostRepository;
+import com.project.shopapp.responses.post.PostResponse;
+import com.project.shopapp.responses.report.ReportResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,9 +47,11 @@ public class PostService implements IPostService {
     }
 
     @Override
-    public Page<Post> getAllPost(int page, int size) {
+    public Page<PostResponse> getAllPost(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return postRepository.findAll(pageable);
+
+        return postRepository.findAll(pageable)
+                .map(PostResponse::fromPost);
     }
 
     @Override
