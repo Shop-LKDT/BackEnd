@@ -406,7 +406,7 @@ public class UserController {
         }
 
         // Store file and get filename
-        String imageName = FileUtils.storeFile(file);
+        String imageName = FileUtils.storeFile(file, "uploads");
 
         // Change user profile image
         userService.changeProfileImage(loginUser.getId(), imageName);

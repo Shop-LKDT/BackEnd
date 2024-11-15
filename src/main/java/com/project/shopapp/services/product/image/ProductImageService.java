@@ -1,7 +1,7 @@
 package com.project.shopapp.services.product.image;
 
 import com.project.shopapp.exceptions.DataNotFoundException;
-import com.project.shopapp.models.ProductImage;
+import com.project.shopapp.models.images.ProductImage;
 import com.project.shopapp.repositories.ProductImageRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

@@ -13,6 +13,8 @@ import java.util.UUID;
 
 public class FileUtils {
     private static String UPLOADS_FOLDER = "uploads";
+    private static String UPLOADS_FOLDER_POST_IMAGE = "uploads/postImages";
+
     public static void deleteFile(String filename) throws IOException {
         // Đường dẫn đến thư mục chứa file
         java.nio.file.Path uploadDir = Paths.get(UPLOADS_FOLDER);
@@ -29,19 +31,27 @@ public class FileUtils {
     }
     public static boolean isImageFile(MultipartFile file) {
         String contentType = file.getContentType();
-        return contentType != null && contentType.startsWith("image/");
+        String originalFilename = file.getOriginalFilename();
+        return contentType != null && contentType.startsWith("image/") &&
+                (originalFilename != null && originalFilename.matches(".*\\.(jpg|jpeg|png|gif|bmp)$"));
     }
 
-    public static String storeFile(MultipartFile file) throws IOException {
+
+    public static String storeFile(MultipartFile file, String folder) throws IOException {
         if (!isImageFile(file) || file.getOriginalFilename() == null) {
             throw new IOException("Invalid image format");
         }
+
         String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        // Thêm UUID vào trước tên file để đảm bảo tên file là duy nhất
-        //String uniqueFilename = UUID.randomUUID().toString() + "_" + filename; //old code, not good
-        String uniqueFilename = UUID.randomUUID().toString() + "_" + System.nanoTime(); // Convert nanoseconds to microseconds
+        // Lấy tên file gốc và phần mở rộng
+        String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
+        String extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1); // Lấy phần mở rộng
+
+        // Tạo tên file duy nhất (bao gồm phần mở rộng)
+        String uniqueFilename = UUID.randomUUID().toString() + "_" + System.nanoTime() + "." + extension;
+
         // Đường dẫn đến thư mục mà bạn muốn lưu file
-        java.nio.file.Path uploadDir = Paths.get(UPLOADS_FOLDER);
+        java.nio.file.Path uploadDir = Paths.get(folder);
         // Kiểm tra và tạo thư mục nếu nó không tồn tại
         if (!Files.exists(uploadDir)) {
             Files.createDirectories(uploadDir);

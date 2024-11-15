@@ -2,10 +2,11 @@ package com.project.shopapp.services.product;
 
 import com.github.javafaker.Faker;
 import com.project.shopapp.dtos.ProductDTO;
-import com.project.shopapp.dtos.ProductImageDTO;
+import com.project.shopapp.dtos.images.ProductImageDTO;
 import com.project.shopapp.exceptions.DataNotFoundException;
 import com.project.shopapp.exceptions.InvalidParamException;
 import com.project.shopapp.models.*;
+import com.project.shopapp.models.images.ProductImage;
 import com.project.shopapp.repositories.*;
 import com.project.shopapp.responses.product.ProductResponse;
 import lombok.RequiredArgsConstructor;
@@ -14,18 +15,8 @@ import org.springframework.data.domain.PageRequest;
 //import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 @Service
