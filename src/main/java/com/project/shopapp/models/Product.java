@@ -1,5 +1,6 @@
 package com.project.shopapp.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.shopapp.models.images.ProductImage;
@@ -38,6 +39,11 @@ public class Product extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "supplier_id") // Đây là khóa ngoại tới Supplier
+    @JsonBackReference
+    private Supplier supplier;
 
     @Column(name = "color")
     private String color;
