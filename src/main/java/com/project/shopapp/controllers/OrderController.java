@@ -21,7 +21,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("${api.prefix}/orders")
@@ -178,4 +182,27 @@ public class OrderController {
                 .data(orderResponses)
                 .build());
     }
+
+    @GetMapping("/total-revenue")
+    public ResponseEntity<String> getTotalRevenue() {
+        try {
+            // Gọi service để tính tổng doanh thu
+            double totalRevenue = orderService.calculateTotalRevenue();
+
+            // Format kết quả để không sử dụng dạng khoa học
+            String formattedRevenue = String.format("%.2f", totalRevenue);
+
+            return ResponseEntity.ok(formattedRevenue);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("0.00");
+        }
+    }
+
+
+    @GetMapping("/monthly-revenue")
+    public ResponseEntity<int[]> getMonthlyRevenue() {
+        int[] monthlyRevenue = orderService.getMonthlyRevenueData();
+        return ResponseEntity.ok(monthlyRevenue);
+    }
+
 }

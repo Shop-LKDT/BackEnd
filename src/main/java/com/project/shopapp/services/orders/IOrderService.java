@@ -16,4 +16,6 @@ public interface IOrderService {
     void deleteOrder(Long orderId);
     List<OrderResponse> findByUserId(Long userId);
     Page<Order> getOrdersByKeyword(String keyword, Pageable pageable);
+    double calculateTotalRevenue() throws Exception;
+    public int[] getMonthlyRevenueData();
 }

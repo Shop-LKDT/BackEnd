@@ -59,6 +59,14 @@ public class UserController {
     private final EmailService emailService;
     private final IAuthService authService;
 
+    @GetMapping("/all")
+    public ResponseEntity<List<User>> getAllUsers() {
+        // Lấy tất cả người dùng từ service
+        List<User> users = userService.findAllUsers();
+        // Trả về danh sách users
+        return ResponseEntity.ok(users);
+    }
+
     @GetMapping("existingUser")
     public ResponseEntity<?> existingUser(
             @RequestParam(defaultValue = " ") String gg_id
