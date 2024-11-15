@@ -11,6 +11,7 @@ public interface ICommentService {
     Comment insertComment(CommentDTO comment);
 
     void deleteComment(Long commentId);
+    List<Comment> getAllComments();
     void updateComment(Long id, CommentDTO commentDTO) throws DataNotFoundException;
 
     List<CommentResponse> getCommentsByUserAndProduct(Long userId, Long productId);
