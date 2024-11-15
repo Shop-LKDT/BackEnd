@@ -55,6 +55,11 @@ public class CommentService implements ICommentService{
     }
 
     @Override
+    public List<Comment> getAllComments() {
+        return commentRepository.findAll();
+    }
+
+    @Override
     @Transactional
     public void updateComment(Long id, CommentDTO commentDTO) throws DataNotFoundException {
         Comment existingComment = commentRepository.findById(id)

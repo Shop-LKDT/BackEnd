@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${api.prefix}/comments")
@@ -31,8 +32,23 @@ import java.util.Objects;
 public class CommentController {
     private final CommentService commentService;
     private final SecurityUtils securityUtils;
-    @GetMapping("")
+    @GetMapping("/all")
     public ResponseEntity<ResponseObject> getAllComments(
+
+    ) {
+        List<CommentResponse> commentResponses;
+        List<Comment> comments = commentService.getAllComments();
+        commentResponses = comments.stream()
+                .map(CommentResponse::fromComment)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok().body(ResponseObject.builder()
+                .message("Get comments successfully")
+                .status(HttpStatus.OK)
+                .data(commentResponses)
+                .build());
+    }
+    @GetMapping("")
+    public ResponseEntity<ResponseObject> getAllCommentsByUserAndProduct(
             @RequestParam(value = "user_id", required = false) Long userId,
             @RequestParam("product_id") Long productId
     ) {
@@ -108,6 +124,16 @@ public class CommentController {
                         .status(HttpStatus.OK)
                         .build());
     }
+        @DeleteMapping("/{id}")
+        public ResponseEntity<ResponseObject> deleteComment(@PathVariable Long id) throws Exception{
+            commentService.deleteComment(id);
+            return ResponseEntity.ok(
+                    ResponseObject.builder()
+                            .status(HttpStatus.OK)
+                            .message("Delete category successfully")
+                            .build());
+        }
+
     @PostMapping("/generateFakeComments")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseObject> generateFakeComments() throws Exception {
