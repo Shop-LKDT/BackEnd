@@ -30,14 +30,15 @@ public class FavoriteController {
     private FavoriteService favoriteService;
 
     @PostMapping("/toggle")
-    public ResponseEntity<String> toggleFavorite(@RequestParam Long userID, @RequestParam Long productID) {
+    public ResponseEntity<Boolean> toggleFavorite(@RequestParam Long userID, @RequestParam Long productID) {
         try {
-            favoriteService.toggleFavorite(userID, productID);
-            return ResponseEntity.ok("Yêu thích đã được cập nhật");
+            boolean isFavorited = favoriteService.toggleFavorite(userID, productID);
+            return ResponseEntity.ok(isFavorited);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Lỗi khi cập nhật yêu thích");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
     // API kiểm tra trạng thái yêu thích của người dùng với sản phẩm
     @GetMapping("/check")
