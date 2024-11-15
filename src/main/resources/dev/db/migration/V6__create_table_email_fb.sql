@@ -1,0 +1,8 @@
+
+CREATE TABLE IF NOT EXISTS facebooks (
+   id INT AUTO_INCREMENT PRIMARY KEY,
+   facebook_id VARCHAR(255) DEFAULT '',
+   name VARCHAR(255) DEFAULT '',
+   email VARCHAR(255) DEFAULT ''
+);
+
