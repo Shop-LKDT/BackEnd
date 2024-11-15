@@ -33,3 +33,4 @@ build/
 .vscode/
 src/main/resources/logs/application.log
 .env
+src/main/resources/application.yml
