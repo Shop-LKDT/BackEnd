@@ -2,9 +2,9 @@ package com.project.shopapp.services.category;
 
 import com.project.shopapp.dtos.CategoryDTO;
 import com.project.shopapp.models.Category;
-import com.project.shopapp.models.Product;
+import com.project.shopapp.models.product.Product;
 import com.project.shopapp.repositories.CategoryRepository;
-import com.project.shopapp.repositories.ProductRepository;
+import com.project.shopapp.repositories.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.project.shopapp.controllers;
+package com.project.shopapp.controllers.product;
 
 
 import com.project.shopapp.models.images.ProductImage;

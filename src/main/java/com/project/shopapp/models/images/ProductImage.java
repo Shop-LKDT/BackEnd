@@ -2,7 +2,7 @@ package com.project.shopapp.models.images;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.project.shopapp.models.Product;
+import com.project.shopapp.models.product.Product;
 import jakarta.persistence.*;
 import lombok.*;
 

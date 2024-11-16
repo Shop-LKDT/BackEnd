@@ -5,9 +5,9 @@ spring:
   main:
     allow-circular-references: true
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/lkdt
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3307/lkdt
     username: root
-    password: 1234
+    password: Abc123456789@
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
