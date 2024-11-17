@@ -1,7 +1,10 @@
 package com.project.shopapp.controllers.product;
 
+import com.project.shopapp.dtos.product.WarehouseProductDTO;
+import com.project.shopapp.models.product.Product;
 import com.project.shopapp.models.product.WarehouseProduct;
 import com.project.shopapp.responses.ResponseObject;
+import com.project.shopapp.responses.product.ProductResponse;
 import com.project.shopapp.responses.product.WareProductResponse;
 import com.project.shopapp.services.product.warehouse.WarehouseProductService;
 import jakarta.validation.Valid;
@@ -11,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${api.prefix}/warehouse-products")
@@ -40,12 +44,24 @@ public class WareHouseProductController {
                 .data(warehouseProduct)
                 .build());
     }
+    @GetMapping("/products-not-in-warehouse/{warehouseId}")
+    public List<ProductResponse> getProductsNotInWarehouse(@PathVariable Long warehouseId) {
+        try {
+            List<Product> productsNotInWarehouse = warehouseProductService.getProductsNotInWarehouse(warehouseId);
+            return productsNotInWarehouse.stream()
+                    .map(ProductResponse::fromProduct)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            // Handle exception or return error response
+            throw new RuntimeException("Error occurred: " + e.getMessage());
+        }
+    }
 
     // Thêm mới một sản phẩm vào kho
     @PostMapping
-    public ResponseEntity<ResponseObject> createWarehouseProduct(@Valid @RequestBody WarehouseProduct wareProductResponse) {
+    public ResponseEntity<ResponseObject> createWarehouseProduct(@Valid @RequestBody WarehouseProductDTO warehouseProductDTO) throws Exception {
         // Chuyển đổi DTO sang entity nếu cần thiết trong service
-        WareProductResponse warehouseProduct = warehouseProductService.saveWarehouseProduct(wareProductResponse);
+        WareProductResponse warehouseProduct = warehouseProductService.saveWarehouseProduct(warehouseProductDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseObject.builder()
                 .message("Product created successfully")
                 .status(HttpStatus.CREATED)

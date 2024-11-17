@@ -15,4 +15,6 @@ public interface WarehouseProductRepository extends JpaRepository<WarehouseProdu
     List<WarehouseProduct> findByProductIdAndQuantityGreaterThanOrderByQuantityDesc(
             @Param("productId") Long productId
     );
+
+    List<WarehouseProduct> findByWarehouseId(Long warehouseId);
 }

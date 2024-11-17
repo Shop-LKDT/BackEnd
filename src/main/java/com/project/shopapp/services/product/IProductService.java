@@ -1,6 +1,7 @@
 package com.project.shopapp.services.product;
 import com.project.shopapp.dtos.ProductDTO;
 import com.project.shopapp.dtos.images.ProductImageDTO;
+import com.project.shopapp.exceptions.DataNotFoundException;
 import com.project.shopapp.models.images.ProductImage;
 import com.project.shopapp.models.product.Product;
 import com.project.shopapp.responses.product.ProductResponse;

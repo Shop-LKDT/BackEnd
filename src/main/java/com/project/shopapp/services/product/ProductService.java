@@ -12,6 +12,7 @@ import com.project.shopapp.repositories.*;
 import com.project.shopapp.repositories.product.ProductImageRepository;
 import com.project.shopapp.repositories.product.ProductRepository;
 import com.project.shopapp.responses.product.ProductResponse;
+import com.project.shopapp.services.product.warehouse.WarehouseProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +31,7 @@ public class ProductService implements IProductService{
     private final CategoryRepository categoryRepository;
     private final ProductImageRepository productImageRepository;
     private final FavoriteRepository favoriteRepository;
+    private final WarehouseProductService warehouseProductService;
     @Override
     @Transactional
     public Product createProduct(ProductDTO productDTO) throws DataNotFoundException {
@@ -200,6 +202,8 @@ public class ProductService implements IProductService{
                 .map(ProductResponse::fromProduct)
                 .collect(Collectors.toList());
     }
+
+
     @Override
     //@Transactional
     public void generateFakeLikes() throws Exception {

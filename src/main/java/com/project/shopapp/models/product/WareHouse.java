@@ -26,7 +26,5 @@ public class WareHouse extends BaseEntity {
     @Column(name = "location")
     private String location;
 
-    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<WarehouseProduct> warehouseProducts = new HashSet<>();
 
 }

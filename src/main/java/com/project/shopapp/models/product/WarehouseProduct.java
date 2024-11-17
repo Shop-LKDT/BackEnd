@@ -2,10 +2,7 @@ package com.project.shopapp.models.product;
 
 import com.project.shopapp.models.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -13,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "warehouse_product")
+@Builder
 public class WarehouseProduct extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,5 +26,9 @@ public class WarehouseProduct extends BaseEntity {
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
+
+    public Long getProductId() {
+        return this.product != null ? this.product.getId() : null; // Trả về ID của sản phẩm
+    }
 
 }
