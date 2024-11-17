@@ -1,14 +1,13 @@
 package com.project.shopapp.services.comment;
 
 import com.github.javafaker.Faker;
-import com.project.shopapp.controllers.ProductController;
 import com.project.shopapp.dtos.CommentDTO;
-import com.project.shopapp.dtos.ProductDTO;
 import com.project.shopapp.exceptions.DataNotFoundException;
 import com.project.shopapp.models.*;
 import com.project.shopapp.models.Comment;
+import com.project.shopapp.models.product.Product;
 import com.project.shopapp.repositories.CommentRepository;
-import com.project.shopapp.repositories.ProductRepository;
+import com.project.shopapp.repositories.product.ProductRepository;
 import com.project.shopapp.repositories.UserRepository;
 import com.project.shopapp.responses.comment.CommentResponse;
 import lombok.RequiredArgsConstructor;

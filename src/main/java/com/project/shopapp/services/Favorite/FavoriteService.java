@@ -1,9 +1,9 @@
 package com.project.shopapp.services.Favorite;
 
 import com.project.shopapp.models.Favorite;
-import com.project.shopapp.models.Product;
+import com.project.shopapp.models.product.Product;
 import com.project.shopapp.repositories.FavoriteRepository;
-import com.project.shopapp.repositories.ProductRepository;
+import com.project.shopapp.repositories.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

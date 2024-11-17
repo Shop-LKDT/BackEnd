@@ -4,10 +4,13 @@ import com.project.shopapp.dtos.OrderDetailDTO;
 import com.project.shopapp.exceptions.DataNotFoundException;
 import com.project.shopapp.models.Order;
 import com.project.shopapp.models.OrderDetail;
-import com.project.shopapp.models.Product;
+import com.project.shopapp.models.product.Product;
+import com.project.shopapp.models.product.WarehouseProduct;
 import com.project.shopapp.repositories.OrderDetailRepository;
 import com.project.shopapp.repositories.OrderRepository;
-import com.project.shopapp.repositories.ProductRepository;
+import com.project.shopapp.repositories.product.ProductRepository;
+import com.project.shopapp.services.product.warehouse.IWarehouseProductService;
+import com.project.shopapp.services.product.warehouse.WarehouseProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +23,7 @@ public class OrderDetailService implements IOrderDetailService{
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final ProductRepository productRepository;
+    private final WarehouseProductService warehouseProductService;
     @Override
     @Transactional
     public OrderDetail createOrderDetail(OrderDetailDTO orderDetailDTO) throws Exception {
@@ -39,6 +43,7 @@ public class OrderDetailService implements IOrderDetailService{
                 .totalMoney(orderDetailDTO.getTotalMoney())
                 .color(orderDetailDTO.getColor())
                 .build();
+        warehouseProductService.updateQuantityProduct(product.getId(), orderDetail.getNumberOfProducts());
         //lưu vào db
         return orderDetailRepository.save(orderDetail);
     }

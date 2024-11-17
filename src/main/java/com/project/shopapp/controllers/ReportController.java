@@ -1,28 +1,17 @@
 package com.project.shopapp.controllers;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.shopapp.dtos.ReportDTO;
-import com.project.shopapp.models.Product;
 import com.project.shopapp.models.Report;
 import com.project.shopapp.responses.ResponseObject;
-import com.project.shopapp.responses.order.OrderResponse;
-import com.project.shopapp.responses.product.ProductListResponse;
-import com.project.shopapp.responses.product.ProductResponse;
-import com.project.shopapp.responses.report.ReportListResponse;
 import com.project.shopapp.responses.report.ReportResponse;
 import com.project.shopapp.services.report.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
-import java.util.List;
 
 @RestController
 @RequestMapping("${api.prefix}/reports")

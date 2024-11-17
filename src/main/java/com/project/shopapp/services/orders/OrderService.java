@@ -6,8 +6,11 @@ import com.project.shopapp.dtos.OrderDetailDTO;
 import com.project.shopapp.dtos.OrderWithDetailsDTO;
 import com.project.shopapp.exceptions.DataNotFoundException;
 import com.project.shopapp.models.*;
+import com.project.shopapp.models.product.Product;
 import com.project.shopapp.repositories.*;
+import com.project.shopapp.repositories.product.ProductRepository;
 import com.project.shopapp.responses.order.OrderResponse;
+import com.project.shopapp.services.product.warehouse.WarehouseProductService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -27,6 +30,7 @@ public class OrderService implements IOrderService{
     private final ProductRepository productRepository;
     private final CouponRepository couponRepository;
     private final OrderDetailRepository orderDetailRepository;
+    private final WarehouseProductService warehouseProductService;
 
     private final ModelMapper modelMapper;
 
@@ -78,6 +82,8 @@ public class OrderService implements IOrderService{
             orderDetail.setNumberOfProducts(quantity);
             // Các trường khác của OrderDetail nếu cần
             orderDetail.setPrice(product.getPrice());
+            warehouseProductService.updateQuantityProduct(product.getId(), orderDetail.getNumberOfProducts());
+
 
             // Thêm OrderDetail vào danh sách
             orderDetails.add(orderDetail);

@@ -1,5 +1,6 @@
 package com.project.shopapp.models;
 
+import com.project.shopapp.models.product.Product;
 import com.project.shopapp.services.product.IProductRedisService;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

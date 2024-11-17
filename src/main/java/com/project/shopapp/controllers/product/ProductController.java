@@ -1,4 +1,4 @@
-package com.project.shopapp.controllers;
+package com.project.shopapp.controllers.product;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.javafaker.Faker;
@@ -6,7 +6,7 @@ import com.project.shopapp.components.LocalizationUtils;
 import com.project.shopapp.components.SecurityUtils;
 import com.project.shopapp.dtos.ProductDTO;
 import com.project.shopapp.dtos.images.ProductImageDTO;
-import com.project.shopapp.models.Product;
+import com.project.shopapp.models.product.Product;
 import com.project.shopapp.models.User;
 import com.project.shopapp.models.images.ProductImage;
 import com.project.shopapp.responses.ResponseObject;
