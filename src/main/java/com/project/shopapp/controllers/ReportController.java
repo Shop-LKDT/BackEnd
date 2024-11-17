@@ -21,7 +21,6 @@ public class ReportController {
     private final ReportService reportService;
 
     @PostMapping("")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ResponseObject> createReport(
             @RequestBody ReportDTO reportDTO) {
         try {
