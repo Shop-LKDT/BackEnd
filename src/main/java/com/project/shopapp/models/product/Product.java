@@ -48,8 +48,6 @@ public class Product extends BaseEntity {
     @JsonBackReference
     private Supplier supplier;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<WarehouseProduct> warehouseProducts = new HashSet<>();
 
     @Column(name = "color")
     private String color;
