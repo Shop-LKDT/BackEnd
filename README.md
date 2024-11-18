@@ -1,9 +1,6 @@
 JDK VERSION 21
 Cách chạy Project:
-- Tạo file .env, sau đó thêm:
-GOOGLE_CLIENT_ID = 
-GOOGLE_CLIENT_SECRET = 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
-GOOGLE_REDIRECT_URI = http://localhost:4200/auth/google/callback
+- Tạo file .env
 - import file lkdt.sql (strong source code có é)
 - trong file application.yml, phần database đổi lại:
   datasource:
