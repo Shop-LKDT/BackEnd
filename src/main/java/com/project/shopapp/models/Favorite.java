@@ -1,10 +1,9 @@
 package com.project.shopapp.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.shopapp.models.product.Product;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "favorites")

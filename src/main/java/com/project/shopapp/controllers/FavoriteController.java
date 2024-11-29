@@ -1,6 +1,6 @@
 package com.project.shopapp.controllers;
 
-import com.project.shopapp.models.Product;
+import com.project.shopapp.models.product.Product;
 import com.project.shopapp.repositories.FavoriteRepository;
 import com.project.shopapp.services.Favorite.FavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;

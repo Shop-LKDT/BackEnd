@@ -1,14 +1,17 @@
-package com.project.shopapp.models;
+package com.project.shopapp.models.product;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.project.shopapp.models.*;
 import com.project.shopapp.models.images.ProductImage;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
@@ -19,7 +22,7 @@ import java.util.List;
 @Builder
 //Event-driven approach with Spring Data JPA
 @EntityListeners(ProductListener.class)
-public class Product extends BaseEntity{
+public class Product extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +47,7 @@ public class Product extends BaseEntity{
     @JoinColumn(name = "supplier_id") // Đây là khóa ngoại tới Supplier
     @JsonBackReference
     private Supplier supplier;
+
 
     @Column(name = "color")
     private String color;

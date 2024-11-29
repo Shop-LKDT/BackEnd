@@ -1,8 +1,7 @@
-package com.project.shopapp.repositories;
+package com.project.shopapp.repositories.product;
 
 import com.project.shopapp.models.Category;
-import com.project.shopapp.models.Favorite;
-import com.project.shopapp.models.Product;
+import com.project.shopapp.models.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.Query;
